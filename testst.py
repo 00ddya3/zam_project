@@ -1,7 +1,12 @@
 import streamlit as st
+import pandas as pd
 
 ## Title
 st.title('Streamlit Tutorial')
+
+#side bar
+st.sidebar.text('zamcodings')
+st.sidebar.selectbox("왼쪽 사이드바 Select Box", ("의류", "도서", "가구"))
 
 ## Header/Subheader
 st.header('This is header')
@@ -19,4 +24,15 @@ if occupation == 'aa' :
 elif occupation == 'bb' :
     second = st.selectbox("multi combobox", ['b1', 'b2', 'b3'])
 elif occupation == 'cc' :
-    st.video('https://www.youtube.com/watch?v=z1jOb9PTe9E', start_time=2)
+    #layout
+    col1, col2 = st.columns(2)
+    with col1 :
+        st.video('https://www.youtube.com/watch?v=z1jOb9PTe9E', start_time=2)
+    with col2 :
+        st.video('https://www.youtube.com/watch?v=z1jOb9PTe9E', start_time=2)
+
+
+df = pd.read_csv("C:/jupiter_workspace/data/naver_api.csv", header=None)
+df.columns=['title', 'uploader', 'date', 'url']
+
+st.dataframe(df)
