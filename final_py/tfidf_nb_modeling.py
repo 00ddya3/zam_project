@@ -11,7 +11,7 @@ import pickle
 """
 1. DB에 저장된 각 테이블에서 랜덤으로 20%를 추출
 2. class 열을 추가해서 엑셀 안에서 직접 관련있음(1), 관련없음(0) 작성
-3. 다시 데이터를 파이썬에 불러와 CountVectorizer
+3. 다시 데이터를 파이썬에 불러와 TfidfVectorizer
 4. NaiveBayes 분류모델 실행
 5. 피클 파일로 모델 저장
 ** 3번 이후의 코드만 수록
@@ -84,7 +84,7 @@ def balancingData(dff_x, dff_y) :
 
 def modeling(X, y) :
     """
-    TfidfVectorizer + MultinomialNB 실행 & 결과 리포트 발행
+    TfidfVectorizer + MultinomialNB 실행
     ...
     parameters
         X : 독립변수 시리즈 (dataFrame; shape[n,1])

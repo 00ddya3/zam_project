@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 import re
 import warnings
 from tqdm import tqdm
+import pickle
 
 from ckonlpy.tag import Twitter
 from pykospacing import Spacing
@@ -23,8 +24,8 @@ from sklearn.metrics import classification_report
 """
 1. DB에 저장된 각 테이블에서 랜덤으로 20%를 추출
 2. class 열을 추가해서 엑셀 안에서 직접 관련있음(1), 관련없음(0) 작성
-3. 다시 데이터를 파이썬에 불러와 CountVectorizer
-4. NaiveBayes 분류모델 실행
+3. 다시 데이터를 파이썬에 불러와 자연어 전처리 진행
+4. Dense Network 분류모델 실행
 5. 피클 파일로 모델 저장
 ** 3번 이후의 코드만 수록
 """
@@ -266,6 +267,22 @@ def showReport(model, X_test_pad, y_test) :
     print(classification_report(y_test,y_pred))
 
 
+def saveModel(table, model) : 
+    """
+    구축한 모델을 피클 파일으로 저장
+    ...
+    parameters
+        table : 데이터가 저장되어 있는 DB 테이블명이자 csv명 (str)
+        model : 모델
+    ...
+    returns
+        None
+    """
+    # 모델 저장
+    with open('dense_'+table++'.pkl', 'wb') as f:
+        pickle.dump(model, f)
+
+
 def main(table) :
     dff_x, dff_y = getData(table)
 
@@ -278,6 +295,8 @@ def main(table) :
     plotHistory(history)
 
     showReport(model, X_test_pad, y_test)
+
+    saveModel(table, model)
 
 
 if __name__ == '__main__':
