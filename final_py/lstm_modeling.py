@@ -170,7 +170,7 @@ def nlpData(X_train, X_test) :
     return tk, word_dict, X_train_pad, X_test_pad
 
 
-def denseModel(X_train_pad, X_test_pad, y_train, y_test, tk, word_dict) :
+def lstmModel(X_train_pad, X_test_pad, y_train, y_test, tk, word_dict) :
     """
     Dense Network 모델링    
     ...
@@ -183,39 +183,39 @@ def denseModel(X_train_pad, X_test_pad, y_train, y_test, tk, word_dict) :
         word_dict : 데이터에서 추출한 단어들의 딕셔너리 (dictionary; (index, word))
     ...
     returns 
-        model : 모델
+        model1 : 모델
         history : 데이터를 학습시킨 모델
     """
 
-    # Hyper Parameters
+    # LSTM hyperparameters
     max_len = max(len(word) for word in tk)
     vocab_size = len(word_dict)+1
     embeding_dim = 16
-    drop_value = 0.2
+    n_lstm = 10
+    drop_lstm = 0.2
 
-    # Model Architecture for dense network
-    model = Sequential()
-    model.add(Embedding(vocab_size, embeding_dim, input_length=max_len))
-    model.add(GlobalAveragePooling1D())
-    model.add(Dense(2, activation='relu')) #24: 네트워크 크기
-    model.add(Dropout(drop_value))
-    model.add(Dense(1, activation='sigmoid'))
+    # LSTM Spam detection architecture
+    model1 = Sequential()
+    model1.add(Embedding(vocab_size, embeding_dim, input_length=max_len))
+    model1.add(LSTM(n_lstm, dropout=drop_lstm, return_sequences=True))
+    model1.add(LSTM(n_lstm, dropout=drop_lstm, return_sequences=True))
+    model1.add(Dense(1, activation='sigmoid'))
 
-    model.summary()
+    model1.summary()
 
     warnings.filterwarnings('ignore')
 
     # Compiling the dense model
-    model.compile(loss = 'binary_crossentropy', optimizer ='adam', metrics = ['accuracy'])
+    model1.compile(loss = 'binary_crossentropy', optimizer ='adam', metrics = ['accuracy'])
 
     num_epochs = 10
     early_stop = EarlyStopping(monitor = 'val_loss', patience = 3)
 
-    history = model.fit(X_train_pad, y_train,
+    history = model1.fit(X_train_pad, y_train,
                         epochs = num_epochs, validation_data = (X_test_pad, y_test),
                         callbacks = [early_stop], verbose = 2)
 
-    return model, history
+    return model1, history
 
 
 def plotHistory(history) :
@@ -273,7 +273,7 @@ def main(table) :
 
     word_dict, X_train_pad, X_test_pad = nlpData(X_train, X_test)
 
-    model, history = denseModel(X_train_pad, X_test_pad, y_train, y_test, word_dict)
+    model, history = lstmModel(X_train_pad, X_test_pad, y_train, y_test, word_dict)
     
     plotHistory(history)
 

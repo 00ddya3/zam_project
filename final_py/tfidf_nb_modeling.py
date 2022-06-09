@@ -84,7 +84,7 @@ def balancingData(dff_x, dff_y) :
 
 def modeling(X, y) :
     """
-    TfidfVectorizer + MultinomialNB 실행
+    TfidfVectorizer + MultinomialNB 실행 & 결과 리포트 발행
     ...
     parameters
         X : 독립변수 시리즈 (dataFrame; shape[n,1])
