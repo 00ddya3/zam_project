@@ -189,7 +189,7 @@ def lstmModel(X_train_pad, X_test_pad, y_train, y_test, tk, word_dict) :
     """
 
     # LSTM hyperparameters
-    max_len = max(len(word) for word in tk)
+    max_len = max(len(word) for word in tk) 
     vocab_size = len(word_dict)+1
     embeding_dim = 16
     n_lstm = 10

@@ -1,4 +1,5 @@
 import streamlit as st
+import streamlit_wordcloud as wordcloud
 import pandas as pd
 
 ## Title
@@ -32,7 +33,13 @@ elif occupation == 'cc' :
         st.video('https://www.youtube.com/watch?v=z1jOb9PTe9E', start_time=2)
 
 
+# 데이터프레임
 df = pd.read_csv("C:/jupiter_workspace/data/naver_api.csv", header=None)
 df.columns=['title', 'uploader', 'date', 'url']
 
 st.dataframe(df)
+
+
+# 워드클라우드
+word = [dict(text='원피스', value=167), dict(text='뷔스티에', value=121), dict(text='롱', value=36), dict(text='코디', value=36), dict(text='행복', value=25)]
+return_obj = wordcloud.visualize(word, per_word_coloring=False)
