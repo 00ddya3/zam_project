@@ -2,6 +2,7 @@ import psycopg2
 import pandas as pd
 from ckonlpy.tag import Twitter
 from pykospacing import Spacing
+import streamlit as st
 
 """
 사용자가 입력한 단어가 있는 데이터를 DB에서 불러와 반환
@@ -39,7 +40,7 @@ def tokenWord(keyword) :
     
     return clean_word
 
-
+@st.cache
 def getTitleData(table, clean_word) :
     """
     DB에서 검색 단어가 타이틀에 포함된 데이터를 불러오고 dataFrame 생성 
@@ -58,7 +59,6 @@ def getTitleData(table, clean_word) :
 
     #데이터 가져오기
     command = "select distinct title, date, url, hashtag from " + table + " where title like '" + clean_word + "'"
-    print(command)
     cur.execute(command)
     conn.commit()
     data = cur.fetchall()

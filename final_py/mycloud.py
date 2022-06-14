@@ -5,6 +5,7 @@ import re
 from ckonlpy.tag import Twitter
 from pykospacing import Spacing
 from collections import Counter
+import streamlit as st
 
 
 def tokenWord(keyword) :
@@ -54,6 +55,7 @@ def rmEmoji(inputData):
 
     return data
 
+@st.cache()
 def nlpData(df) :
     """
     1. 데이터 띄워쓰기 보완

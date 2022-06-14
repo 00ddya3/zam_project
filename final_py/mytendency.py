@@ -1,20 +1,53 @@
 import pandas as pd
+import matplotlib.pyplot as plt
+import logging
+
+
 
 """
-데이터를 월별로 그룹화하여 카운트한 새로운 df 반환
+데이터를 월별로 그룹화하여 발행량 plot
 """
 
-def main(df) :
+def main(keyword, df) :
 
     df.date = pd.to_datetime(df.date)     #datetime type으로 변환
     df['month'] = df['date'].dt.month     #월추출
-    df_count = df.groupby('month').count()     #월별 게시글 개수 카운팅
-    #df_count = df_count.reset_index()               #인덱스 초기화
-    df_count = df_count[['title']]         #필요한 열만 추출
-    #df_count.columns = ['month', 'num']             #컬럼명 교체
     
-    return df_count
+    months = ['2021-6','2021-7','2021-8', '2021-9', '2021-10', '2021-11', '2021-12', '2022-1', '2022-2', '2022-3', '2022-4', '2022-5']
+    cnts = []
+        
+    for month in months :
+        month = month.split('-')[1]
+        cnt = df[df['month'] == int(month)].shape[0]
+        cnts.append(cnt)
+
+    logging.basicConfig(level='INFO')
+
+    mlogger = logging.getLogger('matplotlib')
+    mlogger.setLevel(logging.WARNING)
+
+    fig = plt.figure(figsize=(10, 6))
+    plt.rc('font', family='Malgun Gothic')
+    
+
+    plt.plot(months, cnts, marker = 'o', linestyle='--', linewidth=3, color='#F68121')
+
+    for i, v in enumerate(months):
+        plt.text(v, cnts[i], cnts[i],                   # 좌표 (x축 = v, y축 = y[0]..y[1], 표시 = y[0]..y[1])
+                fontsize = 20, 
+                color='#F68121',
+                horizontalalignment='right',            # horizontalalignment (left, center, right)
+                verticalalignment='bottom')             # verticalalignment (top, center, bottom)
+
+    plt.xticks(rotation=40, fontsize=15)
+    plt.yticks(fontsize=15)
+
+    plt.title('연간 컨텐츠 발행량 추이', fontsize=20)
+    plt.xlabel ('months', fontsize=20)
+    plt.ylabel('contents', fontsize=20)
+
+    return fig
 
 
 if __name__ == '__main__':
-    df_count = main(input('df :'))
+    df_count = main(input('keyword :'), input('df :'))

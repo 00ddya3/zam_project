@@ -1,13 +1,14 @@
 import streamlit as st
 import streamlit_wordcloud as wordcloud
 import pandas as pd
+import time
 
 ## Title
 st.title('Streamlit Tutorial')
 
 #side bar
 st.sidebar.text('zamcodings')
-st.sidebar.selectbox("왼쪽 사이드바 Select Box", ("의류", "도서", "가구"))
+category = st.sidebar.selectbox("왼쪽 사이드바 Select Box", ("의류", "도서", "가구"))
 
 ## Header/Subheader
 st.header('This is header')
@@ -43,3 +44,38 @@ st.dataframe(df)
 # 워드클라우드
 word = [dict(text='원피스', value=167), dict(text='뷔스티에', value=121), dict(text='롱', value=36), dict(text='코디', value=36), dict(text='행복', value=25)]
 return_obj = wordcloud.visualize(word, per_word_coloring=False)
+
+
+#import pandas as pd
+#import streamlit as st
+
+link1 = "https://stackoverflow.com/questions/71641666/hyperlink-in-streamlit-dataframe"
+link2 = "https://stackoverflow.com/questions/71731937/how-to-plot-comparison-in-streamlit-dynamically-with-multiselect"
+df = pd.DataFrame(
+    {
+        "url": [
+            f'<a target="_blank" href="{link1}">Hyperlink in Streamlit dataframe</a>',
+            f'<a target="_blank" href="{link2}">How to plot comparison in Streamlit dynamically with multiselect?</a>'
+        ],
+        "label": ["question", "question"]
+    }
+)
+
+st.write(df.to_html(escape=False, index=False), unsafe_allow_html=True)
+
+# not centered
+st.markdown(
+    """<a href="https://www.example.com/">example.com</a>""", unsafe_allow_html=True,
+)
+
+#centered
+st.markdown(
+    """<a style='display: block; text-align: center;' href="https://www.example.com/">example.com</a>
+    """,
+    unsafe_allow_html=True,
+)
+
+if st.button('sid') :
+    st.write('sss')
+
+time.sleep(50)
