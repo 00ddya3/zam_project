@@ -8,12 +8,12 @@ import logging
 데이터를 월별로 그룹화하여 발행량 plot
 """
 
-def main(keyword, df) :
+def main(df) :
 
     df.date = pd.to_datetime(df.date)     #datetime type으로 변환
     df['month'] = df['date'].dt.month     #월추출
     
-    months = ['2021-6','2021-7','2021-8', '2021-9', '2021-10', '2021-11', '2021-12', '2022-1', '2022-2', '2022-3', '2022-4', '2022-5']
+    months = ['2021-7','2021-8', '2021-9', '2021-10', '2021-11', '2021-12', '2022-1', '2022-2', '2022-3', '2022-4', '2022-5', '2022-6']
     cnts = []
         
     for month in months :
@@ -50,4 +50,4 @@ def main(keyword, df) :
 
 
 if __name__ == '__main__':
-    df_count = main(input('keyword :'), input('df :'))
+    df_count = main(input('df :'))

@@ -1,4 +1,4 @@
-import conn_db
+import conn_csv
 import mytendency
 import mycloud
 import myrecent
@@ -8,17 +8,26 @@ import streamlit as st
 import streamlit_wordcloud as wordcloud
 import time
 
+#전체 데이터 읽어오기
+yt_clothes = pd.read_csv('C:/jupiter_workspace/zam_project/final_py/data/yt_clothes.csv', encoding='utf-8')
+view_clothes = pd.read_csv('C:/jupiter_workspace/zam_project/final_py/data/view_clothes.csv', encoding='utf-8')
+yt_books = pd.read_csv('C:/jupiter_workspace/zam_project/final_py/data/yt_books.csv', encoding='utf-8')
+view_books = pd.read_csv('C:/jupiter_workspace/zam_project/final_py/data/view_books.csv', encoding='utf-8')
+yt_interior = pd.read_csv('C:/jupiter_workspace/zam_project/final_py/data/yt_interior.csv', encoding='utf-8')
+view_interior = pd.read_csv('C:/jupiter_workspace/zam_project/final_py/data/view_interior.csv', encoding='utf-8')
+
+
 #사이드바
-category = st.sidebar.selectbox("Category", ("가구", "의류", "도서"))
+category = st.sidebar.selectbox("Category", ("의류", "도서", "가구"))
 if category == '의류' :
-    yt_table = 'yt_clothes'
-    view_table = 'view_clothes'
+    yt_table = yt_clothes
+    view_table = view_clothes
 elif category == '도서' :
-    yt_table = 'yt_books'
-    view_table = 'view_books'
+    yt_table = yt_books
+    view_table = view_books
 elif category == '가구' :
-    yt_table = 'yt_interior'
-    view_table = 'view_interior'
+    yt_table = yt_interior
+    view_table = view_interior
 
 
 keyword = st.text_input('keyword : ')
@@ -31,13 +40,13 @@ if keyword != '' :
     # 다단 1 : 유튜브
     with col1 :
         st.header('☆YOUTUBE☆')
-        yt_data = conn_db.main(keyword, yt_table)       # 데이터 읽어오기
+        yt_data = conn_csv.main(keyword, yt_table)       # 데이터 읽어오기
         st.text('최근 1년 유튜브 게시 영상 수 :' + str(yt_data.shape[0]))       #1년 간 총 컨텐츠량 제공
 
     # 다단 2 : 네이버뷰
     with col2 :
         st.header('☆NAVER_VIEW☆')
-        view_data = conn_db.main(keyword, view_table)       # 데이터 읽어오기
+        view_data = conn_csv.main(keyword, view_table)       # 데이터 읽어오기
         st.text('최근 1년 네이버 뷰 포스트 수 :' + str(view_data.shape[0]))     #1년 간 총 컨텐츠량 제공
 
 
